@@ -31,6 +31,44 @@ public class RoomManager : MonoBehaviour
         this.theDoors[2].SetActive(currentRoom.hasExit("east"));
         this.theDoors[3].SetActive(currentRoom.hasExit("west"));
     }
+    public class Room
+{
+    private Dictionary<string, Room> exits;
+
+    public Room()
+    {
+        exits = new Dictionary<string, Room>();
+    }
+
+    public void setExit(string direction, Room neighbor)
+    {
+        exits[direction] = neighbor;
+    }
+
+    public bool hasExit(string direction)
+    {
+        return exits.ContainsKey(direction);
+    }
+
+    public Room getExit(string direction)
+    {
+        if (exits.ContainsKey(direction))
+        {
+            return exits[direction];
+        }
+        return null;
+    }
+
+    public bool tryToTakeExit(string direction)
+    {
+        if (exits.ContainsKey(direction))
+        {
+            Core.thePlayer.setCurrentRoom(exits[direction]);
+            return true;
+        }
+        return false;
+    }
+}
 
     // Update is called once per frame
     void Update()
